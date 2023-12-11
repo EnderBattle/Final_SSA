@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html>
+  
+<!-- Mirrored from inposdom.gob.do/codigo-postal/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 11 Dec 2023 20:07:58 GMT -->
+<head>
+    <title>Codigos postales - Inposdom</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <link media="screen" type="text/css" rel="stylesheet" href="css/animate.css">
+    <link media="screen" type="text/css" rel="stylesheet" href="css/bootstrap.min.css">
+    <link media="screen" type="text/css" rel="stylesheet" href="css/typeaheadjs.css">
+    <link media="screen" type="text/css" rel="stylesheet" href="css/font-awesome.min.css">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:600,400' rel='stylesheet' type='text/css'>
+    <link href="img/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <style>
+	    body{
+	    	background: #436284;
+            font-family: "Open Sans", Helvetica, Arial, sans-serif!important;
+	    }
+		html, body{
+			height: 100%;
+			margin: 0px;
+			padding: 0px;
+		}
+
+		.input-sm{
+			font-size: 14px;
+		}
+
+		#map-canvas {
+			height: 75%;
+			margin: 0px;
+			padding: 0px
+			width:100%;
+		}
+
+		#top-panel{
+			box-shadow: 0px 0px 15px 0px #415f80;
+			position: relative;
+			background: #436284;
+			color: #fff;
+		}
+
+		.tt-dropdown-menu {
+			max-height: 230px;
+			overflow-y: auto;
+		}
+
+		.empty-message {
+		  padding: 5px 10px;
+		 text-align: center;
+		}
+
+		@media (min-width: 768px){
+			#div-btn-search{margin-top: 20px;}
+		}
+
+		#btn-up{
+			position: fixed;
+			bottom: 0px;
+			right: 0px;
+			margin-right: 5px;
+			margin-bottom: 5px;
+		}
+
+		label{font-weight: 600;}
+
+        #loading-div{
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(48, 37, 46, 0.56);
+            /*color: rgb(240,102,0);*/
+            color: #ffffff;
+            margin: 0;
+            top: 0;
+        }
+
+        #loading-div h1{
+            width: 100%;
+            position: absolute;
+            top: calc(50% + 42px);
+            left: 0;
+            text-transform: uppercase;
+            text-align: center;
+            letter-spacing: 4px;
+            font: 300 32px/1 'Open sans condensed', sans-serif;
+        }
+
+        #loading-div .loading{
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            top: calc(50% - 50px);
+            left: calc(50% - 50px);
+
+            box-sizing: border-box;
+            border-top: 8px solid rgb(255,255,255);
+            border-right: 8px solid rgba(255,255,255,.3);
+            border-bottom: 8px solid rgba(255,255,255,.3);
+            border-left: 8px solid rgba(255,255,255,.3);
+            border-radius: 100%;
+
+            -webkit-animation: rotate 1s infinite linear;
+            -moz-animation: rotate 1s infinite linear;
+            -o-animation: rotate 1s infinite linear;
+            animation: rotate 1s infinite linear;
+        }
+
+        /* Chrome, Safari, Opera */
+        @-webkit-keyframes rotate {
+            from {transform: rotate(0deg) translate3d(0,0,0)}
+            to {transform: rotate(359deg) translate3d(0,0,0)}
+        }
+
+        @keyframes rotate{
+            from {transform: rotate(0deg) translate3d(0,0,0)}
+            to {transform: rotate(359deg) translate3d(0,0,0)}
+        }
+
+    </style>
+  </head>
+  <body>
+  	<div id="top-panel">
+  		<form style="" onsubmit="javascript:return false;">
+  			<div class="">
+  				<div class="col-sm-12">
+	  				<h4 style="margin-top:6px;">Buscador de Códigos Postales en República Dominicana</h4>
+	  			</div>
+  			</div>
+  			<div class="">
+  				<div class="form-group col-sm-3 col-md-2">
+			     	<!-- <label for="">Seleccione una Provincia</label> -->
+			     	<select name="" id="provincia" class="form-control input-sm">
+				     	<option value="0" provincia-id="0" lat="18.466667" lng="-69.94999999999999" zipcode="" mapzoom="7" kml_src="">Seleccione una provincia...</option>
+				     	<option value="altagracia" provincia-id="altagracia" lat="18.5850236" lng="-68.6201072" range-a="23000" range-b="23999" zipcode="" mapzoom="10" kml_src="kml_data/altagracia.kmz">Altagracia</option>
+				     	<option value="azua" provincia-id="azua" lat="18.46" lng="-70.74000000000001" range-a="71000" range-b="71999" zipcode="" mapzoom="10" kml_src="kml_data/azua.kmz">Azua</option>
+				     	<option value="bahoruco" provincia-id="bahoruco" lat="18.4752899" lng="-71.33493220000003" range-a="82000" range-b="82999" zipcode="" mapzoom="10" kml_src="kml_data/bahoruco.kmz">Bahoruco</option>
+				     	<option value="barahona" provincia-id="barahona" lat="18.2" lng="-71.10000000000002" range-a="81000" range-b="81999" zipcode="" mapzoom="10" kml_src="kml_data/barahona.kmz">Barahona</option>
+				     	<option value="dajabon" provincia-id="dajabon" lat="19.5499241" lng="-71.70865140000001" range-a="63000" range-b="63999" zipcode="" mapzoom="10" kml_src="kml_data/dajabon.kmz">Dajabón</option>
+				     	<option value="duarte" provincia-id="duarte" lat="19.260" lng="-70.000" range-a="31000" range-b="31999" zipcode="" mapzoom="10" kml_src="kml_data/duarte.kmz">Duarte</option>
+				     	<option value="seibo" provincia-id="seibo" lat="18.763" lng="-69.04200000000003" range-a="24000" range-b="24999" zipcode="" mapzoom="10" kml_src="kml_data/seibo.kmz">El Seibo</option>
+				     	<option value="eliaspina" provincia-id="eliaspina" lat="19.0524685" lng="-71.61986860000002" range-a="73000" range-b="73999" zipcode="" mapzoom="10" kml_src="kml_data/eliaspina.kmz">Elias Piña</option>
+				     	<option value="espaillat" provincia-id="espaillat" lat="19.5788064" lng="-70.3598758" range-a="56000" range-b="56999" zipcode="" mapzoom="10" kml_src="kml_data/espaillat.kmz">Espaillat</option>
+				     	<option value="hatomayor" provincia-id="hatomayor" lat="18.766667" lng="-69.25" range-a="25000" range-b="25999" zipcode="" mapzoom="10" kml_src="kml_data/hatomayor.kmz">Hato Mayor</option>
+				     	<option value="independencia" provincia-id="independencia" lat="18.4126807" lng="-71.61986860000002" range-a="83000" range-b="83999" zipcode="" mapzoom="10" kml_src="">Independencia</option>
+				     	<option value="laromana" provincia-id="laromana" lat="18.43" lng="-68.97000000000003" range-a="22000" range-b="22999" zipcode="" mapzoom="10" kml_src="kml_data/romana.kmz">La Romana</option>
+				     	<option value="lavega" provincia-id="lavega" lat="19.22" lng="-70.52999999999997" range-a="41000" range-b="41999" zipcode="" mapzoom="10" kml_src="kml_data/lavega.kmz">La Vega</option>
+				     	<option value="mariatrinidadsanchez" provincia-id="mariatrinidadsanchez" lat="19.4245445" lng="-70.00267559999998" range-a="33000" range-b="33001" zipcode="" mapzoom="10" kml_src="kml_data/mariatrinidadsanchez.kmz">Maria Trinidad Sanchez</option>
+				     	<option value="monsenornouel" provincia-id="monsenornouel" lat="18.9215234" lng="-70.38368149999997" range-a="42000" range-b="42999" zipcode="" mapzoom="10" kml_src="kml_data/bonao.kmz">Monseñor Nouel</option>
+				     	<option value="montecristi" provincia-id="montecristi" lat="19.7647958" lng="-71.42993639999997" range-a="62000" range-b="62999" zipcode="" mapzoom="10" kml_src="kml_data/montecristi.kmz">Montecristi</option>
+				     	<option value="monteplata" provincia-id="monteplata" lat="18.81" lng="-69.78999999999996" range-a="92000" range-b="92999" zipcode="" mapzoom="10" kml_src="kml_data/monteplata.kmz">Monte Plata</option>
+				     	<option value="pedernales" provincia-id="pedernales" lat="18.033333" lng="-71.75" range-a="84000" range-b="84999" zipcode="" mapzoom="10" kml_src="kml_data/pedernales.kmz">Pedernales</option>
+				     	<option value="peravia" provincia-id="peravia" lat="18.2855033" lng="-70.38368149999997" range-a="94000" range-b="94999" zipcode="" mapzoom="10" kml_src="kml_data/bani.kmz">Peravia</option>
+				     	<option value="puertoplata" provincia-id="puertoplata" lat="19.7807686" lng="-70.68710909999999" range-a="57000" range-b="57999" zipcode="" mapzoom="10" kml_src="kml_data/puertoplata.kmz">Puerto Plata</option>
+				     	<option value="hermanasmirabal" provincia-id="hermanasmirabal" lat="19.3966586" lng="-70.3598758" range-a="34000" range-b="34999" zipcode="" mapzoom="10" kml_src="kml_data/salcedo.kmz">Hermanas Mirabal</option>
+				     	<option value="samana" provincia-id="samana" lat="19.2080704" lng="-69.3324518" range-a="32000" range-b="32999" zipcode="" mapzoom="10" kml_src="kml_data/samana.kmz">Samana</option>
+				     	<option value="sancristobal" provincia-id="sancristobal" lat="18.416667" lng="-70.133333" range-a="91000" range-b="91999" zipcode="" mapzoom="10" kml_src="kml_data/sancristobal_v3.kmz">San Cristobal</option>
+				     	<option value="sanjuan" provincia-id="sanjuan" lat="18.8810919" lng="-71.28742090000003" range-a="72000" range-b="72999" zipcode="" mapzoom="10" kml_src="kml_data/sanjuan.kmz">San Juan</option>
+				     	<option value="sanpedrodemacoris" provincia-id="sanpedrodemacoris" lat="18.45" lng="-69.30000000000001" range-a="21000" range-b="21999" zipcode="" mapzoom="10" kml_src="kml_data/sanpedro.kmz">San Pedro de Macoris</option>
+				     	<option value="sanchezramirez" provincia-id="sanchezramirez" lat="18.9808932" lng="-70.0979491" range-a="43000" range-b="43999" zipcode="" mapzoom="10" kml_src="kml_data/sanchezramirez.kmz">Sánchez Ramírez</option>
+				     	<option value="santiago" provincia-id="santiago" lat="19.466667" lng="-70.69999999999999" range-a="51000" range-b="51999" zipcode="" mapzoom="10" kml_src="kml_data/santiago.kmz">Santiago de los Caballeros</option>
+				     	<option value="santiagorodriguez" provincia-id="santiagorodriguez" lat="19.471979" lng="-71.341339" range-a="64000" range-b="64999" zipcode="" mapzoom="10" kml_src="kml_data/santiagorogriduez.kmz">Santiago Rodríguez</option>
+				     	<option value="valverde" provincia-id="valverde" lat="19.6323442" lng="-71.04977680000002" range-a="61000" range-b="61999" zipcode="" mapzoom="10" kml_src="kml_data/valverde.kmz">Valverde</option>
+				     	<option value="ocoa" provincia-id="ocoa" lat="18.55" lng="-70.5" range-a="93000" range-b="93999" zipcode="" mapzoom="10" kml_src="kml_data/ocoa.kmz">San Jose de Ocoa</option>
+				     	<option value="santodomingo" provincia-id="santodomingo" lat="18.466667" lng="-69.949999" range-a="10000" range-b="11999" zipcode="10100" mapzoom="10" kml_src="kml_data/santodomingo_v3.kmz">Santo Domingo</option>
+				     </select>
+			     </div>
+			     <div id="div-zipcode" class="form-group col-sm-3 col-md-2 hidden">
+			     	<!-- <label for="">Código Postal</label> -->
+			     	<input type="text" id="zipcode" name="zipcode"  class="form-control input-sm" placeholder="Código Postal" autocomplete="off">
+			     </div>
+			     <div id="div-address" class="form-group col-sm-4 col-md-3  hidden">
+			     	<!-- <label for="">Dirección</label> -->
+			     	<input type="text" id="address" name="address" class="form-control input-sm" placeholder="Dirección" autocomplete="off">
+			     </div>
+			     <div id="div-street" class="form-group col-sm-4 col-md-3  hidden">
+			     	<!-- <label for="">Dirección</label> -->
+			     	<input type="text" id="street" name="street" class="form-control input-sm" placeholder="Calle o Avenida" autocomplete="off">
+			     </div>
+			     <div class="col-sm-1">
+			     	<!-- Button trigger modal -->
+					<button type="button" style="margin-bottom:10px;" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-leyend">Ver leyenda</button>
+			     </div>
+			     <div id="div-btn-search" class="col-sm-1 hidden" >
+			     	<button type="button" class="btn btn-primary" id="btn-search" name="button"><i class="fa fa-search"></i> Buscar</button>
+			     </div>
+			     <div class="clearfix"></div>
+		    </div>
+	    </form>
+  	</div>
+  	<!-- <div id="panel"> -->
+      <input id="address-geocode" type="textbox" value="" class="hidden">
+      <!-- <input type="button" value="Geocode" onclick="codeAddress()">
+    </div> -->
+    <div id="map-canvas"></div>
+
+    <div class="modal fade" id="modal-leyend" tabindex="-1" role="dialog" aria-labelledby="modal-leyend-label" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+	        <h4 class="modal-title" id="modal-leyend-label">Leyenda</h4>
+	      </div>
+	      <div class="modal-body">
+	        <div>
+	        	<img style="max-width:25px; margin-right:5px;" src="img/postal-office.png" alt="Marcador rojo">
+				<span class="h4">Oficina postal</span>
+	        </div>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+	<a id="btn-up" href="#top-panel" class="btn btn-sm btn-success"><i class="fa fa-arrow-up"></i></a>
+    <div id="loading-div" class="animated fadeIn">
+        <h1>Cargando</h1>
+        <div class='loading'></div>
+    </div>
+      <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFoJVU8799DPJMW-XI98JhWsxKnfMLLFM&amp;callback=initMap"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <!--<script src="https://maps.googleapis.com/maps/api/js?v=3"></script>-->
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/typeahead.bundle.js"></script>
+    <script type="text/javascript" src="js/handlebars-v2.0.0.js"></script>
+    <script>
+
+    	var site_url = "index-2.html";
+    	var site_short_url = "../index.html";
+
+    	//var site_url = "http://localhost/inposdom/";
+    	//var site_short_url = "http://localhost/";
+
+    	var substringMatcher = function(strs, attribute) {
+			return function findMatches(q, cb) {
+			var matches, substrRegex;
+
+			// an array that will be populated with substring matches
+			matches = [];
+
+			// regex used to determine if a string contains the substring `q`
+			substrRegex = new RegExp(q, 'i');
+
+			// iterate through the pool of strings and for any string that
+			// contains the substring `q`, add it to the `matches` array
+			$.each(strs, function(i, str) {
+
+				if (substrRegex.test(str[attribute])) {
+				// the typeahead jQuery plugin expects suggestions to a
+				// JavaScript object, refer to typeahead docs for more info
+				matches.push(str);
+				}
+			});
+
+			cb(matches);
+			};
+		};
+
+		var map;
+		var geocoder;
+		var markers = [];
+		var iwMaxWidth = 350;
+		var infowindow;
+
+	    //console.log(infowindow);
+
+		function initialize() {
+		  geocoder = new google.maps.Geocoder();
+		  var mapOptions = {
+		    zoom: 8,
+		    center: new google.maps.LatLng(18.735693, -70.162651)
+		    //scrollwheel: false,
+		  };
+		  map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+
+      		var provincia_id = getUrlVars()["provincia"];
+			if(provincia_id != undefined){
+	      		$('#provincia').val(provincia_id);
+	      	}else{
+	      		$('#provincia').val(0);
+	      	}
+
+	      	provincia_seleccionada = $("#provincia option:selected");
+
+	      	if(provincia_seleccionada.length == 0){
+	      		$('#provincia').val(0);
+	      	}
+
+	      	provincia_seleccionada = $("#provincia option:selected");
+
+	      	if(provincia_seleccionada.length > 0 && provincia_seleccionada.attr('provincia-id') != '0'){
+	      		$("#div-zipcode").removeClass('hidden');
+	      		$("#div-address").removeClass('hidden');
+	      		$("#div-street").removeClass('hidden');
+	      		//$("#div-btn-search").removeClass('hidden');
+	      	}
+
+	      	loadKmlLayer(site_url+provincia_seleccionada.attr('kml_src'));
+	      	loadKmlLayer(site_url+'kml_data/provincias/inposdom.kmz');
+	      	//loadKmlLayer(site_url+'kml_data/provincias/municipios.kmz');
+	        provincia_location = new google.maps.LatLng(provincia_seleccionada.attr('lat'), provincia_seleccionada.attr('lng'));
+			//console.log(provincia_location);
+			if(provincia_location != undefined){
+			 	setCenter(provincia_location);
+			}
+
+			map.setZoom(parseInt(provincia_seleccionada.attr('mapzoom')));
+
+			var json = (function () {
+			    var json = null;
+			    $.ajax({
+			        'async': false,
+			        'global': false,
+			        'url': getJsonURL(),
+			        'dataType': "json",
+			        'success': function (data) {
+			            json = data;
+			        }
+			    });
+			    return json;
+			})();
+
+			var json_streets = (function () {
+			    var json_streets = null;
+			    $.ajax({
+			        'async': false,
+			        'global': false,
+			        'url': getJsonURL()+"&t=s",
+			        'dataType': "json",
+			        'success': function (data) {
+			            json_streets = data;
+			        }
+			    });
+			    return json_streets;
+			})();
+
+			//console.log(getJsonURL());
+
+  			$('#zipcode').typeahead(null, {
+				name: 'zipcodes',
+				displayKey: 'zipcode',
+				source: substringMatcher(json, 'zipcode'),
+				templates: {
+				    empty: [
+				      '<div class="empty-message">',
+				      'No se encontraron codigos postales que coincidan',
+				      '</div>'
+				    ].join('\n'),
+				    suggestion: Handlebars.compile('<p><strong>{{zipcode}}</strong> <br> {{place}}</p>')
+				}
+			}).on('typeahead:selected', function(e, item){
+
+				$("#address").val(item.place);
+				$("#street").val('');
+				$("#address-geocode").val('');
+
+				json_streets = (function () {
+
+                    showLoading();
+				    var json_streets = null;
+				    $.ajax({
+				        'async': false,
+				        'global': false,
+				        'url': getJsonURL()+"&t=s&zipcode="+item.zipcode,
+				        'dataType': "json",
+				        'success': function (data) {
+				            json_streets = data;
+                            loadMarker(item);
+				        }
+				    });
+				    return json_streets;
+				})();
+
+				$('#street').typeahead('destroy');
+
+				$('#street').typeahead(null, {
+					name: 'streets',
+					displayKey: 'street',
+					source: substringMatcher(json_streets, 'street'),
+					templates: {
+					    empty: [
+					      '<div class="empty-message">',
+					      'No se encontraron calles o avenidas que coincidan',
+					      '</div>'
+					    ].join('\n'),
+					    suggestion: Handlebars.compile('<p><strong>{{street}}</strong> <br> {{place}}</p>')
+					}
+
+				}).on('typeahead:selected', function(e, item){
+
+                    $("#address").val(item.place);
+                    $("#zipcode").val(item.zipcode);
+
+                    $("#address-geocode").val(item.street_short);
+                    codeAddress(item)
+
+					//console.log(json_streets);
+
+				});
+                hideLoading();
+
+			});
+
+			$('#address').typeahead(null, {
+				name: 'addresses',
+				displayKey: 'place',
+				source: substringMatcher(json, 'place'),
+				templates: {
+				    empty: [
+				      '<div class="empty-message">',
+				      'No se encontraron codigos postales que coincidan',
+				      '</div>'
+				    ].join('\n'),
+				    suggestion: Handlebars.compile('<p><strong>{{place}}</strong> <br> {{zipcode}}</p>')
+				}
+			}).on('typeahead:selected', function(e, item){
+
+				loadMarker(item);
+				$("#zipcode").val(item.zipcode);
+				$("#street").val('');
+
+				json_streets = (function () {
+
+                    showLoading();
+				    var json_streets = null;
+				    $.ajax({
+				        'async': false,
+				        'global': false,
+				        'url': getJsonURL()+"&t=s&address="+item.place,
+				        'dataType': "json",
+				        'success': function (data) {
+				            json_streets = data;
+				        }
+				    });
+				    return json_streets;
+				})();
+
+
+				$('#street').typeahead('destroy');
+
+				$('#street').typeahead(null, {
+					name: 'streets',
+					displayKey: 'street',
+					source: substringMatcher(json_streets, 'street'),
+					templates: {
+					    empty: [
+					      '<div class="empty-message">',
+					      'No se encontraron calles o avenidas que coincidan',
+					      '</div>'
+					    ].join('\n'),
+					    suggestion: Handlebars.compile('<p><strong>{{street}}</strong> <br> {{place}}</p>')
+					}
+
+				}).on('typeahead:selected', function(e, item){
+
+					$("#address").val(item.place);
+					$("#zipcode").val(item.zipcode);
+
+					$("#address-geocode").val(item.street_short);
+					codeAddress(item);
+
+					//console.log(json_streets);
+
+				});
+
+                hideLoading();
+
+			});
+
+			$('#street').typeahead(null, {
+				name: 'streets',
+				displayKey: 'street',
+				source: substringMatcher(json_streets, 'street'),
+				templates: {
+				    empty: [
+				      '<div class="empty-message">',
+				      'No se encontraron calles o avenidas que coincidan',
+				      '</div>'
+				    ].join('\n'),
+				    suggestion: Handlebars.compile('<p><strong>{{street}}</strong> <br> {{place}}</p>')
+				}
+
+			}).on('typeahead:selected', function(e, item){
+
+				$("#address").val(item.place);
+				$("#zipcode").val(item.zipcode);
+
+				$("#address-geocode").val(item.street_short);
+				codeAddress(item);
+
+				//console.log(json_streets);
+
+			});
+		}
+
+		function codeAddress(item) {
+		  var address = document.getElementById('address-geocode').value;
+		  geocoder.geocode( { 'address': address+", DO", 'componentRestrictions': {'country':'DO' }}, function(results, status) {
+
+		    if (status == google.maps.GeocoderStatus.OK) {
+		      //deleteMarkers();
+		      //addMarker(results[0].geometry.location);
+		      //setCenter(results[0].geometry.location);
+		      //console.log(results[0].geometry.location);
+		      //console.log('encontrado');
+
+		      location_geo = results[0].geometry.location;
+
+		      //console.log(results[0]);
+
+		      //item.lat = results[0].geometry.location.k;
+		      //item.lng = results[0].geometry.location.D;
+		      
+		    } 
+
+		    loadMarker(item, undefined, true);
+
+		    //else {
+		      //alert('El Geolocalizador no funcionó por el siguiente motivo: ' + status);
+		      //console.log('no encontrado');
+		    ///}
+		  });
+
+		}
+
+		function setCenter(location){
+			map.setCenter(location);
+		}
+
+		function addMarker(location) {
+		  var marker = new google.maps.Marker({
+		    position: location,
+		    map: map
+		  });
+		  markers.push(marker);
+		}
+
+		// Sets the map on all markers in the array.
+		function setAllMap(map) {
+		  for (var i = 0; i < markers.length; i++) {
+		    markers[i].setMap(map);
+		  }
+		}
+
+		// Removes the markers from the map, but keeps them in the array.
+		function clearMarkers() {
+		  setAllMap(null);
+		}
+
+		// Deletes all markers in the array by removing references to them.
+		function deleteMarkers() {
+		  clearMarkers();
+		  markers = [];
+		}
+
+		function loadKmlLayer(src) {
+	      var kmlLayer = new google.maps.KmlLayer(src, {
+	        suppressInfoWindows: false,
+	        preserveViewport: true,
+	        map: map
+	      });
+	    }
+
+	    function getUrlVars() {
+		    var vars = {};
+		    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+		        vars[key] = value;
+		    });
+		    return vars;
+		}
+
+		function getJsonURL(){
+			provincia_seleccionada = $("#provincia option:selected");
+			id = provincia_seleccionada.attr('provincia-id');
+			ra = provincia_seleccionada.attr('range-a');
+			rb = provincia_seleccionada.attr('range-b');
+
+			if(document.URL.indexOf(site_short_url) >= 0){
+				return site_url+"json.php?provincia="+id+"&ra="+ra+"&rb="+rb+"&q=%QUERY";
+			}else{
+				return "http://localhost/inposdom/json.php?provincia="+id+"&ra="+ra+"&rb="+rb+"&q=%QUERY";
+			}
+		}
+
+		function loadMarker(item, zoom, street ){
+			deleteMarkers();
+		    myLatlng = new google.maps.LatLng(item.lat,item.lng);
+		    if (street === undefined) street = false;
+
+		    if(street){
+		    	dialog_html = "<div style='min-width:200px; max-width:300px'><b>"+item.street+"</b><br><span>"+item.zipcode+" - "+item.place+"</span></div>";
+			}else{
+		    	dialog_html = "<div style='min-width:200px; max-width:300px'><b>"+item.zipcode+"</b><br><span>"+item.place+"</span></div>";
+			}
+
+		    var marker = new google.maps.Marker({
+		       position: myLatlng,
+		       map: map,
+		       title: item.place,
+		       dialog: dialog_html
+		    });
+		    markers.push(marker);
+
+			google.maps.event.addListener(marker, 'click', function() {
+				//console.log(marker.dialog);
+				if (infowindow) infowindow.close();
+				infowindow = new google.maps.InfoWindow({
+			      content: marker.dialog,
+			      maxWidth: iwMaxWidth
+			    });
+
+				infowindow.open(map, marker);
+			});
+
+			if (zoom === undefined) zoom = 16;
+
+			map.setZoom(zoom);
+			setCenter(myLatlng);
+			new google.maps.event.trigger( marker, 'click' );
+		}
+
+		google.maps.event.addDomListener(window, 'load', initialize);
+
+        //Loading fiv functions
+        function showLoading(animation){
+            animation = typeof animation !== 'undefined' ?  animation : 'fadeIn';
+            $("#loading-div").removeClass().addClass('animated '+animation).one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+                $(this).removeClass();
+            });
+        }
+
+        function hideLoading(animation){
+            animation = typeof animation !== 'undefined' ?  animation : 'fadeOut';
+            $("#loading-div").removeClass().addClass('animated '+animation).one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+                $(this).removeClass().addClass('hidden');
+            });
+        }
+
+    </script>
+    <script type="text/javascript">
+
+        $(window).load(function(e) {
+            hideLoading();
+        });
+    	$(document).ready(function(){
+
+    		loadKmlLayer(site_url+'kml_data/provincias/lavega.kml');
+
+     		//var provincias_json = "json/provincias.json";
+			// $.getJSON(provincias_json)
+			// .done(function( data ) {
+			//   $.each( data, function( i, item ) {
+			//
+			//     option = new Option(item.nombre, item.id);
+			//     option.setAttribute('provincia_id', item.id);
+			//     option.setAttribute('lat', item.lat);
+			//     option.setAttribute('lng', item.lng);
+			//     option.setAttribute('zipcode', item.zipcode);
+			//     option.setAttribute('mapzoom', item.mapzoom);
+			//     option.setAttribute('kml_src', item.kml_src);
+			//     $("#provincia").append(option);
+			//   });
+			// });
+
+    		$("#provincia").on('change', function(){
+    			provincia_seleccionada = $("#provincia option:selected");
+
+    			if(provincia_seleccionada.attr('provincia-id') != 0){
+	    			if(document.URL.indexOf(site_short_url) >= 0){
+						window.location.href = site_url+"?provincia="+provincia_seleccionada.attr('provincia-id');
+					}else{
+						window.location.href = site_url+"?provincia="+provincia_seleccionada.attr('provincia-id');
+					}
+				}else{
+					if(document.URL.indexOf(site_short_url) >= 0){
+						window.location.href = site_url;
+					}else{
+						window.location.href = "http://localhost/inposdom";
+					}
+				}
+    		});
+
+            $(document).on('click', '.onclickshowloading', function(){
+                showLoading();
+            });
+
+    	});
+    </script>
+  </body>
+
+<!-- Mirrored from inposdom.gob.do/codigo-postal/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 11 Dec 2023 20:08:00 GMT -->
+</html>

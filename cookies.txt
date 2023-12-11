@@ -1,0 +1,7 @@
+# HTTrack Website Copier Cookie File
+# This file format is compatible with Netscape cookies
+inposdom.gob.do	TRUE	/	FALSE	1999999999	asgarosforum_unique_id	65776be2c7a45
+inposdom.gob.do	TRUE	/	FALSE	1999999999	wordpress_test_cookie	WP%20Cookie%20check
+inposdom.gob.do	TRUE	/	FALSE	1999999999	asgarosforum_unread_cleared	2023-12-11%2017%3A03%3A05
+inposdom.gob.do	TRUE	/	FALSE	1999999999	asgarosforum_unread_exclude	deleted
+
